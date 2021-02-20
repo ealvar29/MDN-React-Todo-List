@@ -13,12 +13,30 @@ function App(props) {
     const newTask = { id: `todo-${nanoid()}`, name: task, completed: false };
     setTask([...tasks, newTask]);
   }
+
+  function toggleCompleted(id) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        // use object spread syntax to make a new object
+        //whos Completed prop has been inverted
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
+    setTask(updatedTasks);
+  }
+
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter((task) => id !== task.id);
+    setTask(remainingTasks);
+  }
   const taskList = tasks.map((task) => (
     <Todo
       id={task.id}
       key={task.id}
       name={task.name}
-      completed={task.completed}
+      toggleCompleted={toggleCompleted}
+      deleteTask={deleteTask}
     />
   ));
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
